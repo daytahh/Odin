@@ -67,15 +67,7 @@ object PlayerSize : Module(
 
     @JvmStatic
     fun preRenderCallbackScaleHook(entityLivingBaseIn: AbstractClientPlayer) {
-        if (enabled && entityLivingBaseIn == mc.thePlayer && !randoms.containsKey(entityLivingBaseIn.name)) {
-            if (devSizeY < 0) GlStateManager.translate(0f, devSizeY * 2, 0f)
-            GlStateManager.scale(devSizeX, devSizeY, devSizeZ)
-        }
-        if (!randoms.containsKey(entityLivingBaseIn.name)) return
-        if (!devSize && entityLivingBaseIn.name == mc.thePlayer.name) return
-        val random = randoms[entityLivingBaseIn.name] ?: return
-        if (random.scale[1] < 0) GlStateManager.translate(0f, random.scale[1] * 2, 0f)
-        GlStateManager.scale(random.scale[0], random.scale[1], random.scale[2])
+        return
     }
 
     suspend fun updateCustomProperties() {
@@ -100,22 +92,8 @@ object PlayerSize : Module(
         }
     }
 
-    @SubscribeEvent
-    fun onRenderPlayer(event: RenderPlayerEvent.Post) {
-        if (!randoms.containsKey(event.entity.name)) return
-        if (!devSize && event.entity.name == mc.thePlayer.name) return
-        val random = randoms[event.entity.name] ?: return
-        if (!random.wings) return
-        DragonWings.renderWings(event.entityPlayer, event.partialRenderTick, random)
-    }
-
     fun replaceText(text: String?): String? {
-        var replacedText = text
-        for ((key, value) in randoms.toMap()) {
-            if (value.customName?.isBlank() == false) replacedText = value.customName.let { replacedText?.replace(key, it) }
-        }
-
-        return replacedText
+        return text
     }
 
     object DragonWings : ModelBase() {
