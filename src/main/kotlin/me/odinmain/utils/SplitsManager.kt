@@ -51,9 +51,9 @@ object SplitsManager {
 
                 with(dungeonSplits[floor.floorNumber].toMutableList()) {
                     addAll(0, listOf(
-                        Split(Regex("\\[NPC] Mort: Here, I found this map when I first entered the dungeon\\.|\\[NPC] Mort: Right-click the Orb for spells, and Left-click \\(or Drop\\) to use your Ultimate!"), "§2Blood Open") ,
-                        Split(Regex(BLOOD_OPEN_REGEX), "§bBlood Clear"),
-                        Split(Regex("\\[BOSS] The Watcher: You have proven yourself\\. You may pass\\."), "§dPortal Entry")
+                        Split(Regex("\\[NPC] Mort: Here, I found this map when I first entered the dungeon\\.|\\[NPC] Mort: Right-click the Orb for spells, and Left-click \\(or Drop\\) to use your Ultimate!"), "§2Open") ,
+                        Split(Regex(BLOOD_OPEN_REGEX), "§bClear"),
+                        Split(Regex("\\[BOSS] The Watcher: You have proven yourself\\. You may pass\\."), "§dEntry")
                     ))
                     add(Split(Regex("^\\s*☠ Defeated (.+) in 0?([\\dhms ]+?)\\s*(\\(NEW RECORD!\\))?$"), "§1Total"))
                     SplitsGroup(map { it.copy(time = 0L, ticks = 0L) }, floor.personalBest)
