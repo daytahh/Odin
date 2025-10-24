@@ -34,7 +34,7 @@ object SplitsManager {
                 currentSplits.personalBest?.time(index, times.last() / 1000.0, "s§7!", "§6Total time §7took §6", alwaysSendPB = true, sendOnlyPB = Splits.sendOnlyPB, sendMessage = Splits.enabled)
                 times.forEachIndexed { i, it ->
                     val name = if (i == currentSplits.splits.size - 1) "Total" else currentSplits.splits.getSafe(i)?.name
-                    if (sendSplits && Splits.enabled) modMessage("§6$name §7took §6${formatTime((it).toLong())} §7to complete.")
+                    if (sendSplits && Splits.enabled) modMessage("§6$name §7took §6${formatTime((it).toLong())} §7")
                 }
             }
         } else currentSplits.personalBest?.time(index - 1, currentSplitTime, "s§7!", "§6${currentSplits.splits[index - 1].name} §7took §6", alwaysSendPB = true, sendOnlyPB = Splits.sendOnlyPB, sendMessage = Splits.enabled)
@@ -53,7 +53,7 @@ object SplitsManager {
                     addAll(0, listOf(
                         Split(Regex("\\[NPC] Mort: Here, I found this map when I first entered the dungeon\\.|\\[NPC] Mort: Right-click the Orb for spells, and Left-click \\(or Drop\\) to use your Ultimate!"), "§2Open") ,
                         Split(Regex(BLOOD_OPEN_REGEX), "§bClear"),
-                        Split(Regex("\\[BOSS] The Watcher: You have proven yourself\\. You may pass\\."), "§dEntry")
+                        Split(Regex("\\[BOSS] The Watcher: You have proven yourself\\. You may pass\\."), "§dPortal")
                     ))
                     add(Split(Regex("^\\s*☠ Defeated (.+) in 0?([\\dhms ]+?)\\s*(\\(NEW RECORD!\\))?$"), "§1Total"))
                     SplitsGroup(map { it.copy(time = 0L, ticks = 0L) }, floor.personalBest)

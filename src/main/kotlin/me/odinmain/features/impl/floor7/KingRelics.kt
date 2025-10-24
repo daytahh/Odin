@@ -64,7 +64,7 @@ object KingRelics {
     fun relicsOnWorldLast() {
         Relic.entries.forEach {
             if (it != Relic.None && currentRelic.id == it.id)
-                Renderer.drawCustomBeacon("", it.cauldronPosition, it.color, distance = false)
+                Renderer.drawCustomBeacon("", it.cauldronPosition, it.color, false, distance = false)
         }
     }
 

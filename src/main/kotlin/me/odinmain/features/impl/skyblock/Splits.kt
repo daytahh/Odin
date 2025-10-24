@@ -38,7 +38,7 @@ object Splits : Module(
         }
 
         if (bossEntrySplit && currentSplits.splits.size > 3) {
-            RenderUtils.drawText("§9Boss Entry", 1f, 1f + (currentSplits.splits.size - 1) * 9f, Colors.WHITE, shadow = true)
+            RenderUtils.drawText("§9Entry", 1f, 1f + (currentSplits.splits.size - 1) * 9f, Colors.WHITE, shadow = true)
 
             val totalTime = formatTime(times.take(3).sum(), numbersAfterDecimal)
             val displayText = if (showTickTime) "$totalTime §7(§8${(tickTimes.take(3).sum() / 20f).toFixed()}§7)" else totalTime
