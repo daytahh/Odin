@@ -34,7 +34,7 @@ object SplitsManager {
                 currentSplits.personalBest?.time(index, times.last() / 1000.0, "s§7!", "§6Total time §7took §6", alwaysSendPB = true, sendOnlyPB = Splits.sendOnlyPB, sendMessage = Splits.enabled)
                 times.forEachIndexed { i, it ->
                     val name = if (i == currentSplits.splits.size - 1) "Total" else currentSplits.splits.getSafe(i)?.name
-                    if (sendSplits && Splits.enabled) modMessage("§6$name §7took §6${formatTime((it))} §7(§8${ticks[i]}s§7)")
+                    if (sendSplits && Splits.enabled) modMessage("§6$name §7took §6${formatTime((it))} §7(§8${(ticks[i] / 20f).toFixed()}s§7)")
                 }
             }
         } else currentSplits.personalBest?.time(index - 1, currentSplitTime, "s§7!", "§6${currentSplits.splits[index - 1].name} §7took §6", alwaysSendPB = true, sendOnlyPB = Splits.sendOnlyPB, sendMessage = Splits.enabled)
