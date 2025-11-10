@@ -49,7 +49,6 @@ tasks {
             "ForceLoadAsMod" to true,
             "MixinConfigs" to "mixins.odinclient.json",
             "TweakClass" to "org.spongepowered.asm.launch.MixinTweaker",
-            "FMLAT" to "odclient_at.cfg"
         )
         dependsOn(shadowJar)
         enabled = false
