@@ -4,10 +4,8 @@ import me.odinclient.mixin.accessors.IEntityPlayerSPAccessor
 import me.odinclient.utils.skyblock.PlayerUtils
 import me.odinmain.clickgui.settings.Setting.Companion.withDependency
 import me.odinmain.clickgui.settings.impl.*
-import me.odinmain.events.impl.ClickEvent
 import me.odinmain.events.impl.PacketEvent
 import me.odinmain.features.Module
-import me.odinmain.features.impl.dungeon.dungeonwaypoints.DungeonWaypoints.toBlockPos
 import me.odinmain.features.impl.dungeon.dungeonwaypoints.DungeonWaypoints.toVec3
 import me.odinmain.utils.*
 import me.odinmain.utils.clock.Clock
@@ -28,7 +26,6 @@ import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement
 import net.minecraft.network.play.client.C0BPacketEntityAction
 import net.minecraft.network.play.server.S08PacketPlayerPosLook
 import net.minecraft.network.play.server.S29PacketSoundEffect
-import net.minecraft.util.MathHelper
 import net.minecraft.util.MovingObjectPosition.MovingObjectType
 import net.minecraft.util.Vec3
 import net.minecraftforge.client.event.RenderWorldLastEvent
@@ -36,7 +33,6 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import java.util.*
 import kotlin.math.abs
-import kotlin.math.absoluteValue
 
 object EtherWarpHelper : Module(
     name = "Etherwarp Helper",
@@ -60,9 +56,6 @@ object EtherWarpHelper : Module(
     private val etherwarpTBDropDown by DropdownSetting("Trigger Bot")
     private val etherWarpTriggerBot by BooleanSetting("Trigger Bot", false, desc = "Uses Dungeon Waypoints to trigger bot to the closest waypoint.").withDependency { etherwarpTBDropDown }
     private val etherWarpTBDelay by NumberSetting("Trigger Bot Delay", 200L, 0, 1000, 10, desc = "Delay between each trigger bot click.").withDependency { etherWarpTriggerBot && etherwarpTBDropDown }
-    private val etherWarpHelper by BooleanSetting("(MIGHT BAN) Rotator", false, desc = "Rotates you to the closest waypoint when you left click with aotv.").withDependency { etherwarpTBDropDown }
-    private val rotTime by NumberSetting("Rotation Time", 150L, 10L, 600L, 1L, desc = "Time it takes to rotate to the closest waypoint.").withDependency { etherWarpHelper && etherwarpTBDropDown }
-    private val maxRot by NumberSetting("Max Rotation", 90f, 0f, 360f, 1f, desc = "Max rotation difference to rotate to a waypoint.").withDependency { etherWarpHelper && etherwarpTBDropDown }
 
     private val dropdown by DropdownSetting("Sounds", false)
     private val sounds by BooleanSetting("Custom Sounds", false, desc = "Plays the selected custom sound when you etherwarp.").withDependency { dropdown }
@@ -79,16 +72,13 @@ object EtherWarpHelper : Module(
 
     @SubscribeEvent(priority = EventPriority.LOW)
     fun onRenderWorldLast(event: RenderWorldLastEvent) {
-        if (
-            etherWarpTriggerBot &&
-            tbClock.hasTimePassed(etherWarpTBDelay) &&
-            DungeonUtils.currentRoom?.waypoints?.any { etherPos.vec?.equal(it.toVec3()) == true } == true &&
-            mc.thePlayer.usingEtherWarp
+        if (!mc.thePlayer.usingEtherWarp) return
+        if (etherWarpTriggerBot && tbClock.hasTimePassed(etherWarpTBDelay) &&
+            DungeonUtils.currentRoom?.waypoints?.any { etherPos.vec?.equal(it.toVec3()) == true } == true
         ) {
             tbClock.update()
             PlayerUtils.rightClick()
         }
-        if (!mc.thePlayer.usingEtherWarp) return
 
         val player = mc.thePlayer as? IEntityPlayerSPAccessor ?: return
         val positionLook =
@@ -108,25 +98,6 @@ object EtherWarpHelper : Module(
                 Renderer.drawStyledBlock(etherPos.pos ?: return, if (succeeded) color else wrongColor, style, lineWidth, depthCheck, true, expand)
             else
                 Renderer.drawStyledBox(etherPos.pos?.toAABB()?.expand(expand, expand, expand) ?: return, if (succeeded) color else wrongColor, style, lineWidth, depthCheck)
-    }
-
-    @SubscribeEvent
-    fun onLeftClick(event: ClickEvent.Left) {
-        if (etherWarpHelper && mc.thePlayer.usingEtherWarp) {
-            val (_, yaw, pitch) = DungeonUtils.currentRoom?.waypoints?.mapNotNull {
-                etherwarpRotateTo(it.toBlockPos()) ?: return@mapNotNull null
-            }?.minByOrNull {
-                val (_, yaw, pitch) = it
-
-                (yaw - MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw)).absoluteValue +
-                (pitch - MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationPitch)).absoluteValue
-            } ?: return
-            if (
-                (yaw - MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw)).absoluteValue +
-                (pitch - MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationPitch)).absoluteValue > maxRot
-            ) return
-            smoothRotateTo(yaw, pitch, rotTime)
-        }
     }
 
     @SubscribeEvent

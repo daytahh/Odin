@@ -89,10 +89,7 @@ object WitherDragons : Module(
     val soloDebuffOnAll by BooleanSetting("Solo Debuff on All Splits", true, desc = "Same as Purple Solo Debuff but for all dragons (A will only have 1 debuff).").withDependency { dragonPriorityToggle && dragonPriorityDropDown }
     val paulBuff by BooleanSetting("Paul Buff", false, desc = "Multiplies the power in your run by 1.25.").withDependency { dragonPriorityToggle && dragonPriorityDropDown }
 
-    private val colors = arrayListOf("Green", "Purple", "Blue", "Orange", "Red")
     private val relicDropDown by DropdownSetting("Relics Dropdown")
-    val relicAnnounce by BooleanSetting("Relic Announce", false, desc = "Announce your relic to the rest of the party.").withDependency { relicDropDown }
-    val selected by SelectorSetting("Color", "Green", colors, desc = "The color of your relic.").withDependency { relicAnnounce && relicDropDown}
     val relicAnnounceTime by BooleanSetting("Relic Time", true, desc = "Sends how long it took you to get that relic.").withDependency { relicDropDown }
     val relicSpawnTicks by NumberSetting("Relic Spawn Ticks", 42, 0, 100, desc = "The amount of ticks for the relic to spawn.").withDependency {  relicDropDown }
     private val cauldronHighlight by BooleanSetting("Cauldron Highlight", true, desc = "Highlights the cauldron for held relic.").withDependency { relicDropDown }
@@ -116,12 +113,12 @@ object WitherDragons : Module(
         }
 
         onPacket<C08PacketPlayerBlockPlacement> {
-            if (relicAnnounce || relicAnnounceTime) relicsBlockPlace(it)
+            if (relicAnnounceTime) relicsBlockPlace(it)
         }
 
         onPacket<S04PacketEntityEquipment> ({ DungeonUtils.getF7Phase() == M7Phases.P5 && enabled }) {
             dragonSprayed(it)
-            if (relicAnnounce || relicAnnounceTime) relicEquipment(it)
+            if (relicAnnounceTime) relicEquipment(it)
         }
 
         onPacket<S0FPacketSpawnMob> ({ DungeonUtils.getF7Phase() == M7Phases.P5 && enabled }) {

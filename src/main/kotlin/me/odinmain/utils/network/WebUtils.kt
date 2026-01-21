@@ -11,7 +11,6 @@ import me.odinmain.utils.network.SslUtils.createSslContext
 import me.odinmain.utils.network.SslUtils.getTrustManager
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
 import org.apache.http.impl.EnglishReasonPhraseCatalog
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
@@ -30,11 +29,6 @@ object WebUtils {
     suspend fun getInputStream(url: String): Result<InputStream> =
         clientCall(Request.Builder().url(url).build())
             .onFailure { e -> logger.warn("Failed to get input stream. Error: ${e.message}") }
-
-    suspend fun postData(url: String, body: String): Result<String> =
-        clientCall(Request.Builder().url(url).post(body.toRequestBody(JSON)).build())
-            .map { it.bufferedReader().use { reader -> reader.readText() } }
-            .onFailure { e -> logger.warn("Failed to post data. Error: ${e.message}") }
 
     private suspend fun clientCall(request: Request): Result<InputStream> = suspendCancellableCoroutine { cont ->
         logger.info("Making request to ${request.url}")

@@ -30,20 +30,6 @@ object BlockOverlay : Module(
     private val lineSmoothing by BooleanSetting("Line Smoothing", true, desc = "Makes the lines smoother.").withDependency { blockOverlayToggle && (style == 1 || style == 2) }
     private val disableWhenEtherwarping by BooleanSetting("Disable on Etherwarp", true, desc = "Disables the block overlay when etherwarping.").withDependency { blockOverlayToggle }
 
-    private val entityToggle by BooleanSetting("Entity Hover", false, desc = "Master toggle for Entity Hover feature.")
-
-    private val entityMode by SelectorSetting("Mode", HighlightRenderer.HIGHLIGHT_MODE_DEFAULT, HighlightRenderer.highlightModeList, desc = HighlightRenderer.HIGHLIGHT_MODE_DESCRIPTION).withDependency { entityToggle }
-    private val entityColor by ColorSetting("Entity Color", Colors.WHITE.withAlpha(0.75f), true, desc = "The color of the highlight.").withDependency { entityToggle }
-    private val thickness by NumberSetting("Entity Line Width", 2f, 1f, 6f, .1f, desc = "The line width of Outline / Boxes/ 2D Boxes.").withDependency { entityToggle && entityMode != HighlightRenderer.HighlightType.Overlay.ordinal }
-    private val entityStyle by SelectorSetting("Entity Style", Renderer.DEFAULT_STYLE, Renderer.styles, desc = Renderer.STYLE_DESCRIPTION).withDependency { entityToggle && entityMode == HighlightRenderer.HighlightType.Boxes.ordinal }
-
-    init {
-        HighlightRenderer.addEntityGetter({ HighlightRenderer.HighlightType.entries[entityMode]}) {
-            if (!entityToggle || !enabled) emptyList()
-            else mc.objectMouseOver.entityHit?.takeIf { !it.isInvisible }?.let { listOf(HighlightRenderer.HighlightEntity(it, entityColor, thickness, true, entityStyle)) } ?: emptyList()
-        }
-    }
-
     @SubscribeEvent
     fun onRenderBlockOverlay(event: DrawBlockHighlightEvent) {
         if (event.target.typeOfHit != MovingObjectType.BLOCK || mc.gameSettings?.thirdPersonView != 0 || (disableWhenEtherwarping && mc.thePlayer.usingEtherWarp)) return

@@ -2,7 +2,6 @@ package me.odinmain.features.impl.floor7
 
 import me.odinmain.OdinMain.mc
 import me.odinmain.features.impl.floor7.WitherDragons.relicAnnounceTime
-import me.odinmain.features.impl.floor7.WitherDragons.selected
 import me.odinmain.utils.equalsOneOf
 import me.odinmain.utils.render.Color
 import me.odinmain.utils.render.Colors
@@ -37,7 +36,6 @@ object KingRelics {
     private val relicPBs = PersonalBest("Relics", 5)
 
     fun relicsOnMessage() {
-        if (WitherDragons.relicAnnounce) partyMessage("${Relic.entries[selected]} Relic")
         relicPlaceTick = serverTickCounter
         relicTicksToSpawn = WitherDragons.relicSpawnTicks
     }
@@ -64,7 +62,7 @@ object KingRelics {
     fun relicsOnWorldLast() {
         Relic.entries.forEach {
             if (it != Relic.None && currentRelic.id == it.id)
-                Renderer.drawCustomBeacon("", it.cauldronPosition, it.color, distance = false)
+                Renderer.drawCustomBeacon("", it.cauldronPosition, it.color, false, distance = false)
         }
     }
 

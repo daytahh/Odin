@@ -11,9 +11,8 @@ object VisualWords : Module(
 
     @JvmStatic
     fun replaceText(text: String?): String? {
-        if (text == null) return text
-        var replacedText = PlayerSize.replaceText(text)
-        if (!enabled) return replacedText
+        if (!enabled || text == null) return text
+        var replacedText = text
         for (actualText in wordsMap.keys) {
             replacedText = wordsMap[actualText]?.let { replacedText?.replace(actualText, it) }
         }

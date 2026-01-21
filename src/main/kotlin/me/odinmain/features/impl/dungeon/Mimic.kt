@@ -29,6 +29,7 @@ object Mimic : Module(
     private val style by SelectorSetting("Style", Renderer.DEFAULT_STYLE, Renderer.styles, desc = Renderer.STYLE_DESCRIPTION).withDependency { mimicBox }
     private val color by ColorSetting("Color", Colors.MINECRAFT_RED.withAlpha(0.5f), allowAlpha = true, desc = "The color of the box.").withDependency { mimicBox }
     private val lineWidth by NumberSetting("Line Width", 2f, 0.1f, 10f, 0.1f, desc = "The width of the box's lines.").withDependency { mimicBox }
+    private val depthCheck by BooleanSetting("Depth check", true, desc = "Boxes show through walls.").withDependency { !isLegitVersion }
 
     private val princeMessageToggle by BooleanSetting("Prince Message", true, desc = "Toggles the prince killed message.")
     val princeMessage by StringSetting("Prince Message Text", "Prince Killed!", 128, desc = "Message sent when prince is detected as killed.").withDependency { princeMessageToggle }
@@ -53,7 +54,7 @@ object Mimic : Module(
     @SubscribeEvent
     fun onRenderLast(event: RenderChestEvent.Post) {
         if (mimicBox && DungeonUtils.inDungeons && !DungeonUtils.inBoss && event.chest.chestType == 1)
-            Renderer.drawStyledBox(event.chest.pos.toAABB(), color, style =  style, width = lineWidth, depth = isLegitVersion)
+            Renderer.drawStyledBox(event.chest.pos.toAABB(), color, style, lineWidth, depthCheck)
     }
 
     private fun mimicKilled() {

@@ -29,6 +29,9 @@ object ItemsHighlight : Module(
     private val depthCheck by BooleanSetting("Depth check", false, desc = "Boxes show through walls.")
     private val colorStyle by SelectorSetting("Color Style", "Rarity", arrayListOf("Rarity", "Distance", "Custom"), desc = "Which color style to use.")
     private val rarityAlpha by NumberSetting("Rarity Alpha", 1f, 0f, 1f, .1f, desc = "The alpha of the rarity color.").withDependency { colorStyle == 0 }
+    private val pickupcolor by ColorSetting("Pickup Color", Colors.MINECRAFT_GREEN, true, desc = "The custom color to use.").withDependency { colorStyle == 1 }
+    private val earlycolor by ColorSetting("Early Color", Colors.MINECRAFT_YELLOW, true, desc = "The custom color to use.").withDependency { colorStyle == 1 }
+    private val farcolor by ColorSetting("Far Color", Colors.MINECRAFT_RED, true, desc = "The custom color to use.").withDependency { colorStyle == 1 }
     private val customColor by ColorSetting("Custom Color", Colors.WHITE, true, desc = "The custom color to use.").withDependency { colorStyle == 2 }
 
     private var currentEntityItems = mutableSetOf<EntityItem>()
@@ -53,9 +56,9 @@ object ItemsHighlight : Module(
         return when (colorStyle){
             0 -> getRarity(entity.entityItem.lore)?.color?.withAlpha(rarityAlpha) ?: Colors.WHITE
             1 -> when {
-                entity.ticksExisted <= 11 -> Colors.MINECRAFT_YELLOW
-                entity.getDistanceToEntity(mc.thePlayer) <= 3.5 -> Colors.MINECRAFT_GREEN
-                else -> Colors.MINECRAFT_RED
+                entity.ticksExisted <= 11 -> earlycolor
+                entity.getDistanceToEntity(mc.thePlayer) <= 3.5 -> pickupcolor
+                else -> farcolor
             }
             else -> customColor
         }

@@ -79,7 +79,7 @@ object AbilityTimers : Module(
         return when {
             this >= compareFirst-> "§e"
             this >= compareSecond -> "§6"
-            else -> "§4"
+            else -> "§c"
         }
     }
 }

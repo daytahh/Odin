@@ -16,7 +16,6 @@ import me.odinmain.utils.toAABB
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.init.Blocks
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement
-import net.minecraft.tileentity.TileEntityChest
 import net.minecraft.util.BlockPos
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.lwjgl.opengl.GL11
@@ -32,7 +31,6 @@ object ChestEsp : Module(
     private val color by ColorSetting("Color", Colors.MINECRAFT_RED, allowAlpha = true, desc = "The color of the chest ESP.")
 
     private val clickedChests = mutableSetOf<BlockPos>()
-    private var chests = mutableSetOf<BlockPos>()
 
     init {
         onWorldLoad { clickedChests.clear() }
@@ -40,22 +38,16 @@ object ChestEsp : Module(
         onPacket<C08PacketPlayerBlockPlacement> {
             if (getBlockAt(it.position).equalsOneOf(Blocks.chest, Blocks.trapped_chest)) clickedChests.add(it.position)
         }
-
-        execute(200) {
-            chests = mc.theWorld?.loadedTileEntityList?.mapNotNull { (it as? TileEntityChest)?.pos }?.toMutableSet() ?: mutableSetOf()
-        }
     }
 
     @SubscribeEvent
     fun onRenderChest(event: RenderChestEvent.Pre) {
-        if (renderMode != 0 || event.chest != mc.theWorld?.getTileEntity(event.chest.pos)) return
-        if (hideClicked && event.chest.pos in clickedChests) return
-        if ((onlyDungeon && DungeonUtils.inDungeons) || (onlyCH && LocationUtils.currentArea.isArea(Island.CrystalHollows)) || (!onlyDungeon && !onlyCH)) {
-            GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL)
-            GlStateManager.color(1f, 1f, 1f, color.alphaFloat)
-            GlStateManager.enablePolygonOffset()
-            GlStateManager.doPolygonOffset(1f, -1000000f)
-        }
+        if (renderMode != 0 || hideClicked && event.chest.pos in clickedChests) return
+        if (!(onlyDungeon && DungeonUtils.inDungeons) && !(onlyCH && LocationUtils.currentArea.isArea(Island.CrystalHollows)) && !(!onlyDungeon && !onlyCH)) return
+        GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL)
+        GlStateManager.color(1f, 1f, 1f, color.alphaFloat)
+        GlStateManager.enablePolygonOffset()
+        GlStateManager.doPolygonOffset(1f, -1000000f)
     }
 
     @SubscribeEvent
@@ -64,7 +56,7 @@ object ChestEsp : Module(
         if (hideClicked && event.chest.pos in clickedChests) return
 
         if (renderMode == 1) Renderer.drawBox(event.chest.pos.toAABB(), color, 1f, depth = false, fillAlpha = 0)
-        else if (renderMode == 0 && event.chest == mc.theWorld?.getTileEntity(event.chest.pos)) {
+        else if (renderMode == 0) {
             GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL)
             GlStateManager.doPolygonOffset(1f, 1000000f)
             GlStateManager.disablePolygonOffset()

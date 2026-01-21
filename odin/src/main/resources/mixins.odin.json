@@ -9,12 +9,12 @@
     "mixins.MixinNetworkManager",
     "mixins.MixinRendererLivingEntity",
     "mixins.MixinS1CPacketEntityMetadata",
-    "mixins.MixinSkytilsFunny",
     "mixins.MixinWorld",
     "mixins.entity.MixinEntityArrow"
   ],
   "client": [
     "accessors.IEntityPlayerSPAccessor",
+    "accessors.IMinecraftAccessor",
     "mixins.MixinEntityPlayerSP",
     "mixins.MixinEntityRenderer",
     "mixins.MixinFontRenderer",
@@ -33,7 +33,6 @@
     "mixins.MixinRendererLivingEntity",
     "mixins.MixinRenderGlobal",
     "mixins.MixinRenderItem",
-    "mixins.MixinRenderPlayer",
     "mixins.MixinSoundManager",
     "mixins.MixinTileEntityChestRenderer"
   ]

@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.floor
-import kotlin.random.Random
 
 object ChatCommands : Module(
     name = "Chat Commands",
@@ -31,8 +30,6 @@ object ChatCommands : Module(
     private val warptransfer by BooleanSetting("Warp & pt (warptransfer)", true, desc = "Executes the /party warp and /party transfer commands.").withDependency { showSettings }
     private val coords by BooleanSetting("Coords (coords)", true, desc = "Sends your current coordinates.").withDependency { showSettings }
     private val allinvite by BooleanSetting("Allinvite", true, desc = "Executes the /party settings allinvite command.").withDependency { showSettings }
-    private val odin by BooleanSetting("Odin", true, desc = "Sends the odin discord link.").withDependency { showSettings }
-    private val boop by BooleanSetting("Boop", true, desc = "Executes the /boop command.").withDependency { showSettings }
     private val kick by BooleanSetting("Kick", true, desc = "Executes the /p kick command.").withDependency { showSettings }
     private val cf by BooleanSetting("Coinflip (cf)", true, desc = "Sends the result of a coinflip..").withDependency { showSettings }
     private val eightball by BooleanSetting("Eightball", true, desc = "Sends a random 8ball response.").withDependency { showSettings }
@@ -44,7 +41,6 @@ object ChatCommands : Module(
     private val dt by BooleanSetting("DT", true, desc = "Sets a reminder for the end of the run.").withDependency { showSettings }
     private val invite by BooleanSetting("Invite", true, desc = "Invites the player to your party.").withDependency { showSettings }
     private val autoConfirm by BooleanSetting("Auto Confirm", false, desc = "Removes the need to confirm a party invite with the !invite command.").withDependency { showSettings && invite }
-    private val racism by BooleanSetting("Racism", false, desc = "Sends a random racism percentage.").withDependency { showSettings }
     private val queInstance by BooleanSetting("Queue instance cmds", true, desc = "Queue dungeons commands.").withDependency { showSettings }
     private val time by BooleanSetting("Time", false, desc = "Sends the current time.").withDependency { showSettings }
     private val demote by BooleanSetting("Demote", false, desc = "Executes the /party demote command.").withDependency { showSettings }
@@ -91,12 +87,12 @@ object ChatCommands : Module(
     private fun handleChatCommands(message: String, name: String, channel: ChatChannel) {
         val commandsMap = when (channel) {
             ChatChannel.PARTY -> mapOf (
-                "coords" to coords, "odin" to odin, "boop" to boop, "kick" to kick, "cf" to cf, "8ball" to eightball, "dice" to dice, "racism" to racism, "tps" to tps, "warp" to warp,
+                "coords" to coords, "kick" to kick, "cf" to cf, "8ball" to eightball, "dice" to dice, "tps" to tps, "warp" to warp,
                 "warptransfer" to warptransfer, "allinvite" to allinvite, "pt" to pt, "dt" to dt, "m?" to queInstance, "f?" to queInstance, "t?" to queInstance, "time" to time,
                 "demote" to demote, "promote" to promote
             )
-            ChatChannel.GUILD -> mapOf ("coords" to coords, "odin" to odin, "boop" to boop, "cf" to cf, "8ball" to eightball, "dice" to dice, "racism" to racism, "ping" to ping, "tps" to tps, "time" to time)
-            ChatChannel.PRIVATE -> mapOf ("coords" to coords, "odin" to odin, "boop" to boop, "cf" to cf, "8ball" to eightball, "dice" to dice, "racism" to racism, "ping" to ping, "tps" to tps, "invite" to invite, "time" to time)
+            ChatChannel.GUILD -> mapOf ("coords" to coords, "cf" to cf, "8ball" to eightball, "dice" to dice, "ping" to ping, "tps" to tps, "time" to time)
+            ChatChannel.PRIVATE -> mapOf ("coords" to coords, "cf" to cf, "8ball" to eightball, "dice" to dice, "ping" to ping, "tps" to tps, "invite" to invite, "time" to time)
         }
 
         val words = message.drop(1).split(" ").map { it.lowercase() }
@@ -104,12 +100,9 @@ object ChatCommands : Module(
         when (words[0]) {
             "help", "h" -> channelMessage("Commands: ${commandsMap.filterValues { it }.keys.joinToString(", ")}", name, channel)
             "coords", "co" -> if (coords) channelMessage(PlayerUtils.getPositionString(), name, channel)
-            "odin", "od" -> if (odin) channelMessage("Odin! https://discord.gg/2nCbC9hkxT", name, channel)
-            "boop" -> if (boop) words.getOrNull(1)?.let { sendCommand("boop $it") }
             "cf" -> if (cf) channelMessage(if (Math.random() < 0.5) "heads" else "tails", name, channel)
             "8ball" -> if (eightball) channelMessage(responses.random(), name, channel)
             "dice" -> if (dice) channelMessage((1..6).random(), name, channel)
-            "racism" -> if (racism) channelMessage("$name is ${Random.nextInt(1, 101)}% racist. Racism is not allowed!", name, channel)
             "ping" -> if (ping) channelMessage("Ping: ${floor(ServerUtils.averagePing).toInt()}ms", name, channel)
             "tps" -> if (tps) channelMessage("TPS: ${ServerUtils.averageTps.toFixed(1)}", name, channel)
             "fps" -> if (fps) channelMessage("FPS: ${mc.debug.split(" ")[0].toIntOrNull() ?: 0}", name, channel)

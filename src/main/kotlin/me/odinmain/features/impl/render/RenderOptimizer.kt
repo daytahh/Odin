@@ -20,6 +20,7 @@ import me.odinmain.utils.skyblock.dungeon.DungeonUtils
 import me.odinmain.utils.skyblock.dungeon.M7Phases
 import me.odinmain.utils.skyblock.getSkullValue
 import me.odinmain.utils.skyblock.skullTexture
+import net.minecraft.client.entity.EntityOtherPlayerMP
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.culling.ICamera
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
@@ -28,7 +29,6 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.item.*
 import net.minecraft.entity.monster.*
 import net.minecraft.entity.passive.*
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.projectile.*
 import net.minecraft.init.Items
 import net.minecraft.network.play.server.S0EPacketSpawnObject
@@ -273,7 +273,7 @@ object RenderOptimizer : Module(
     }
 
     private val entityColorMap = mapOf(
-        EntityPlayer::class.java to Pair(::shouldRenderPlayer, ::playerColor),
+        EntityOtherPlayerMP::class.java to Pair(::shouldRenderPlayer, ::playerColor),
         EntityCaveSpider::class.java to Pair(::shouldRenderCaveSpider, ::caveSpiderColor),
         EntitySpider::class.java to Pair(::shouldRenderSpider, ::spiderColor),
         EntityPig::class.java to Pair(::shouldRenderPig, ::pigColor),

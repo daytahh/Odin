@@ -31,4 +31,16 @@ object CommandKeybinds : Module(
         if (!enabled || !isInSkyblock) return@onPress
         sendCommand("warp dungeon_hub")
     }
+    private val potionbag by KeybindSetting("Potion Bag", Keyboard.KEY_NONE, desc = "Opens the potion bag menu.").onPress {
+        if (!enabled || !isInSkyblock) return@onPress
+        sendCommand("potionbag")
+    }
+    private val sbmenu by KeybindSetting("SB Menu", Keyboard.KEY_NONE, desc = "Opens the skyblock menu.").onPress {
+        if (!enabled || !isInSkyblock) return@onPress
+        sendCommand("sbmenu")
+    }
+    private val trades by KeybindSetting("Trades", Keyboard.KEY_NONE, desc = "Opens the trades menu.").onPress {
+        if (!enabled || !isInSkyblock) return@onPress
+        sendCommand("trades")
+    }
 }

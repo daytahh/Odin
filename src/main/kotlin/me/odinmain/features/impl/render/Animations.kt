@@ -31,6 +31,7 @@ object Animations : Module(
     private val roll by NumberSetting("Roll", 0.0f, -180.0, 180.0, 1.0, desc = "Rotates your held item. Default: 0")
     val speed by NumberSetting("Speed", 0.0f, -2.0, 1.0, 0.05, desc = "Speed of the swing animation.")
     val ignoreHaste by BooleanSetting("Ignore Haste", false, desc = "Makes the chosen speed override haste modifiers.")
+    val blockHit by BooleanSetting("Block Hit", false, desc = "Visual 1.7 block hit animation.")
     private val noEquipReset by BooleanSetting("No Equip Reset", false, desc = "Disables the equipping animation when switching items.")
     private val noSwing by BooleanSetting("No Swing", false, desc = "Prevents your item from visually swinging forward.")
     private val noTermSwing by BooleanSetting("No Terminator Swing", false, desc = "Prevents your Terminator from swinging.")

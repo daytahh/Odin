@@ -2,10 +2,8 @@ package me.odinmain.commands.impl
 
 import com.github.stivais.commodore.Commodore
 import com.github.stivais.commodore.utils.GreedyString
-import kotlinx.coroutines.launch
 import me.odinmain.OdinMain.VERSION
 import me.odinmain.OdinMain.mc
-import me.odinmain.OdinMain.scope
 import me.odinmain.config.Config
 import me.odinmain.events.impl.PacketEvent
 import me.odinmain.features.ModuleManager.generateFeatureList
@@ -19,13 +17,8 @@ import me.odinmain.features.impl.floor7.p3.MelodyMessage.webSocket
 import me.odinmain.features.impl.floor7.p3.TerminalSolver.firstClickProt
 import me.odinmain.features.impl.nether.NoPre
 import me.odinmain.features.impl.render.ClickGUIModule.wsServer
-import me.odinmain.features.impl.render.PlayerSize
-import me.odinmain.features.impl.render.PlayerSize.DEV_SERVER
-import me.odinmain.features.impl.render.PlayerSize.buildDevBody
 import me.odinmain.utils.isOtherPlayer
-import me.odinmain.utils.network.WebUtils.postData
 import me.odinmain.utils.postAndCatch
-import me.odinmain.utils.render.Colors
 import me.odinmain.utils.skyblock.*
 import me.odinmain.utils.skyblock.PlayerUtils.posX
 import me.odinmain.utils.skyblock.PlayerUtils.posZ
@@ -101,22 +94,6 @@ val devCommand = Commodore("oddev") {
 
     literal("giveaotv").runs {
         sendCommand("give @p minecraft:diamond_shovel 1 0 {ExtraAttributes:{ethermerge:1b}}")
-    }
-
-    literal("updatedevs").runs {
-        scope.launch {
-            PlayerSize.updateCustomProperties()
-        }
-    }
-
-    literal("adddev").runs { name: String, password: String, xSize: Float?, ySize: Float?, zSize: Float? ->
-        val x = xSize ?: 0.6f
-        val y = ySize ?: 0.6f
-        val z = zSize ?: 0.6f
-        modMessage("Sending data... name: $name, x: $x, y: $y, z: $z")
-        scope.launch {
-            modMessage(postData(DEV_SERVER, buildDevBody(name, Colors.WHITE, x, y, z, false, " ", password)).getOrNull())
-        }
     }
 
     literal("debug").runs {

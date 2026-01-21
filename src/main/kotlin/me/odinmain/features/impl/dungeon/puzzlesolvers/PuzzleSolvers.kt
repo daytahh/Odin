@@ -164,7 +164,7 @@ object PuzzleSolvers : Module(
             BlazeSolver.reset()
             BeamsSolver.reset()
             QuizSolver.reset()
-            TTTSolver.reset()
+            // TTTSolver.reset()
         }
     }
 
@@ -211,7 +211,7 @@ object PuzzleSolvers : Module(
         puzzleTimersMap[puzzleName]?.let {
             if (it.sentMessage) return
             puzzlePBs.time(puzzleToIntMap[puzzleName] ?: return@let, (System.currentTimeMillis() - it.timeEntered) / 1000.0, "s§7!", "§a${puzzleName} §7solved in §6", sendOnlyPB = false)
-            if (sendPuzzleTime) partyMessage("It took me ${(System.currentTimeMillis() - it.timeEntered) / 1000f} seconds to solve the $puzzleName puzzle. ${if ((System.currentTimeMillis() - it.timeEntered) / 1000.0 > 30) ":(" else ":)"}")
+            if (sendPuzzleTime) partyMessage("$puzzleName took ${(System.currentTimeMillis() - it.timeEntered) / 1000f} seconds")
             it.sentMessage = true
         }
     }

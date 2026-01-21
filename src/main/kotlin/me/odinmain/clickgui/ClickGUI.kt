@@ -8,7 +8,6 @@ import me.odinmain.utils.render.Color
 import me.odinmain.utils.render.Colors
 import me.odinmain.utils.ui.HoverHandler
 import me.odinmain.utils.ui.Screen
-import me.odinmain.utils.ui.animations.LinearAnimation
 import me.odinmain.utils.ui.mouseX
 import me.odinmain.utils.ui.mouseY
 import me.odinmain.utils.ui.rendering.NVGRenderer
@@ -31,7 +30,6 @@ object ClickGUI : Screen() {
         for (category in Category.entries) add(Panel(category))
     }
 
-    private var openAnim = LinearAnimation<Float>(400)
     val gray38 = Color(38, 38, 38)
     val gray26 = Color(26, 26, 26)
 
@@ -41,10 +39,6 @@ object ClickGUI : Screen() {
 
     override fun draw() {
         NVGRenderer.beginFrame(mc.displayWidth.toFloat(), mc.displayHeight.toFloat())
-        if (openAnim.isAnimating()) {
-            NVGRenderer.translate(0f, openAnim.get(-10f, 0f))
-            NVGRenderer.globalAlpha(openAnim.get(0f, 1f))
-        }
 
         for (i in 0 until panels.size) { panels[i].draw(mouseX, mouseY) }
         SearchBar.draw(mc.displayWidth / 2f - 175f, mc.displayHeight - 110f, mouseX, mouseY)
@@ -88,11 +82,6 @@ object ClickGUI : Screen() {
             if (panelTyped || panelPressed) return
         }
         super.keyTyped(typedChar, keyCode)
-    }
-
-    override fun initGui() {
-        openAnim.start()
-        super.initGui()
     }
 
     override fun onGuiClosed() {

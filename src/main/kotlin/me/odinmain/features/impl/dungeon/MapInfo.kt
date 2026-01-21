@@ -9,6 +9,7 @@ import me.odinmain.utils.render.RenderUtils
 import me.odinmain.utils.skyblock.PlayerUtils
 import me.odinmain.utils.skyblock.dungeon.DungeonUtils
 import me.odinmain.utils.skyblock.modMessage
+import me.odinmain.utils.skyblock.partyMessage
 import me.odinmain.utils.ui.drawStringWidth
 import me.odinmain.utils.ui.getTextWidth
 import net.minecraft.client.gui.Gui
@@ -20,6 +21,8 @@ object MapInfo : Module(
     private val disableInBoss by BooleanSetting("Disable in boss", true, desc = "Disables the information display when you're in boss.")
     private val scoreTitle by BooleanSetting("300 Score Title", true, desc = "Displays a title on 300 score.")
     private val scoreText by StringSetting("Title Text", "&c300 Score!", desc = "Text to be displayed on 300 score.").withDependency { scoreTitle }
+    private val scoreAnnounce by BooleanSetting("300 Score Message", true, desc = "Message to send on 300 score.")
+    private val scoreMessage by StringSetting("Message Text", "300 Score!", desc = "Message to send on 300 score.").withDependency { scoreAnnounce }
     private val printWhenScore by BooleanSetting("Print Score Time", true, desc = "Sends elapsed time in chat when 300 score is reached.")
     val togglePaul by SelectorSetting("Paul Settings", "Automatic", options = arrayListOf("Automatic", "Force Disable", "Force Enable"), desc = "Toggle Paul's settings.")
 
@@ -98,7 +101,8 @@ object MapInfo : Module(
         execute(250) {
             if (!DungeonUtils.inDungeons || shownTitle || (!scoreTitle && !printWhenScore) || DungeonUtils.score < 300) return@execute
             if (scoreTitle) PlayerUtils.alert(scoreText.replace("&", "§"))
-            if (printWhenScore) modMessage("§b${DungeonUtils.score} §ascore reached in §6${DungeonUtils.dungeonTime} || ${DungeonUtils.floor?.name}.")
+            if (scoreAnnounce) partyMessage(scoreMessage)
+            if (printWhenScore) modMessage("§b${DungeonUtils.score} §ascore reached in §6${DungeonUtils.dungeonTime}")
             shownTitle = true
         }
     }

@@ -28,7 +28,6 @@ object MelodyMessage : Module(
     private val sendMelodyMessage by BooleanSetting("Send Melody Message", true, desc = "Sends a message when the melody terminal opens.")
     private val melodyMessage by StringSetting("Melody Message", "Melody Terminal start!", 128, desc = "Message sent when the melody terminal opens.").withDependency { sendMelodyMessage }
     private val melodyProgress by BooleanSetting("Melody Progress", false, desc = "Tells the party about melody terminal progress.")
-    private val melodySendCoords by BooleanSetting("Melody Send Coords", false, desc = "Sends the coordinates of the melody terminal.").withDependency { melodyProgress }
     private val broadcast by BooleanSetting("Broadcast Progress", true, desc = "Broadcasts melody progress to all other odin users in your run using a websocket.")
     private val melodyGui by HUD("Progress GUI", "Shows a GUI with the progress of broadcasting odin users in the melody terminal.", true) {
         if (it) {
@@ -127,7 +126,6 @@ object MelodyMessage : Module(
     fun onTermLoad(event: TerminalEvent.Opened) {
         if (DungeonUtils.getF7Phase() != M7Phases.P3 || event.terminal.type != TerminalTypes.MELODY || mc.currentScreen is TermSimGUI) return
         if (sendMelodyMessage) partyMessage(melodyMessage)
-        if (melodySendCoords) sendCommand("od sendcoords", true)
     }
 
     fun update(type: Int, slot: Int): String = gson.toJson(UpdateMessage(mc.session.username, type, slot))

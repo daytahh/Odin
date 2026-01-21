@@ -15,7 +15,6 @@ import me.odinmain.utils.ServerUtils
 import me.odinmain.utils.SplitsManager
 import me.odinmain.utils.clock.Executor
 import me.odinmain.utils.network.WebUtils.createClient
-import me.odinmain.utils.network.WebUtils.postData
 import me.odinmain.utils.render.HighlightRenderer
 import me.odinmain.utils.render.RenderUtils
 import me.odinmain.utils.render.RenderUtils2D
@@ -72,11 +71,9 @@ object OdinMain {
             ClickGUIModule.lastSeenVersion = VERSION
         }
 
-        val name = mc.session?.username?.takeIf { !it.matches(Regex("Player\\d{2,3}")) } ?: return
         scope.launch(Dispatchers.IO) {
             DungeonWaypointConfig.loadConfig()
             ClickGUIModule.latestVersionNumber = ClickGUIModule.checkNewerVersion(VERSION)
-            postData("https://api.odtheking.com/tele/", """{"username": "$name", "version": "${if (isLegitVersion) "legit" else "cheater"} $VERSION"}""")
         }
     }
 
