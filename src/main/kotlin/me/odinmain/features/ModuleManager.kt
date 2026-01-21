@@ -49,9 +49,9 @@ object ModuleManager {
 
     val modules: ArrayList<Module> = arrayListOf(
         // dungeon
-        DungeonRequeue, BlessingDisplay, PositionalMessages, ExtraStats, KeyHighlight, Mimic, TeammatesHighlight,
-        TerracottaTimer, BloodCamp, SecretClicked, DungeonWaypoints, LeapMenu, PuzzleSolvers, /*MageBeam,*/
-        WarpCooldown, MapInfo, SwapSound, LividSolver, SpiritBear, BreakerDisplay,
+        DungeonRequeue, BlessingDisplay, PositionalMessages, KeyHighlight, Mimic, TeammatesHighlight,
+        TerracottaTimer, BloodCamp, SecretClicked, DungeonWaypoints, LeapMenu, PuzzleSolvers,
+        WarpCooldown, MapInfo, LividSolver, SpiritBear, BreakerDisplay,
 
 
         // floor 7
@@ -59,9 +59,8 @@ object ModuleManager {
         TerminalSimulator, TerminalSounds, ArrowAlign,
 
         // render
-        BPSDisplay, ClickGUIModule, CustomHighlight, CPSDisplay, DragonHitboxes, GyroWand, NameChanger,
-        PetDragon, RenderOptimizer, PerformanceHUD, Waypoints, CanClip, Animations, SpaceHelmet,
-        BlockOverlay, VisualWords, DVD, HideArmor, PlayerSize,
+        BPSDisplay, ClickGUIModule, CustomHighlight, CPSDisplay, GyroWand, NameChanger, RenderOptimizer,
+        PerformanceHUD, Waypoints, Animations, BlockOverlay, VisualWords, HideArmor,
 
         //skyblock
         NoCursorReset, AutoSprint, BlazeAttunement, ChatCommands, DeployableTimer, DianaHelper,

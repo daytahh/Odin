@@ -1,6 +1,5 @@
 package me.odinmain.features.impl.floor7.p3
 
-import io.github.moulberry.notenoughupdates.NEUApi
 import me.odinmain.clickgui.settings.AlwaysActive
 import me.odinmain.clickgui.settings.Setting.Companion.withDependency
 import me.odinmain.clickgui.settings.impl.*
@@ -35,7 +34,6 @@ import net.minecraft.network.play.server.S2EPacketCloseWindow
 import net.minecraft.network.play.server.S2FPacketSetSlot
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.entity.player.ItemTooltipEvent
-import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.eventhandler.EventPriority
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.lwjgl.input.Keyboard
@@ -123,8 +121,6 @@ object TerminalSolver : Module(
                 devMessage("§aNew terminal: §6${it.type.name}")
                 TerminalEvent.Opened(it).postAndCatch()
                 lastTermOpened = it
-
-                if (renderType == 3 && Loader.isModLoaded("notenoughupdates")) NEUApi.setInventoryButtonsToDisabled()
             }
         }
 
