@@ -121,7 +121,6 @@ object LeapMenu : Module(
                     val hover = hoverHandler[i]
                     val hovered = (if (col == 0) mouseX < halfW else mouseX >= halfW) && (if (row == 0) mouseY < halfH else mouseY >= halfH)
                     if (hovered != hover.isHovered) {
-                        hover.anim.start()
                         hover.isHovered = hovered
                     }
 
