@@ -65,9 +65,7 @@ object ChatCommands : Module(
             if (value.matches(endRunRegex)) {
                 if (!dt || dtReason.isEmpty()) return@on
                 schedule(30) {
-                    dtReason.find { it.first == mc.player?.name?.string }?.let { sendCommand("pc Downtime needed: ${it.second}") }
                     modMessage("DT Reasons: ${dtReason.groupBy({ it.second }, { it.first }).entries.joinToString(", ") { (reason, names) -> "${names.joinToString(", ")}: $reason" }}")
-                    alert("§cPlayers need DT")
                     dtReason.clear()
                 }
             }
@@ -124,7 +122,6 @@ object ChatCommands : Module(
         val words = message.drop(1).split(" ").map { it.lowercase() }
 
         when (words[0]) {
-            "help", "h" -> channelMessage("Commands: ${commandsMap.filterValues { it }.keys.joinToString(", ")}", name, channel)
             "odin", "od" -> if (odin) channelMessage("Odin! https://discord.gg/2nCbC9hkxT", name, channel)
             "coords", "co" -> if (coords) channelMessage(getPositionString(), name, channel)
 
@@ -142,13 +139,13 @@ object ChatCommands : Module(
 
             // party commands
 
-            "warp", "w" ->
+            "warp" ->
                 if (channel == ChatChannel.PARTY && partyWarp && PartyUtils.isLeader()) sendCommand("party warp")
 
-            "allinvite", "allinv" ->
+            "allinvite", "allinv", "ai" ->
                 if (channel == ChatChannel.PARTY && partyAllInvite && PartyUtils.isLeader()) sendCommand("party settings allinvite")
 
-            "pt", "ptme", "transfer" ->
+            "pt" ->
                 if (channel == ChatChannel.PARTY && partyTransfer && PartyUtils.isLeader()) sendCommand("party transfer ${words.getOrNull(1)?.let { findPartyMember(it) } ?: name}")
 
             "promote" ->
