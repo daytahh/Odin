@@ -147,7 +147,7 @@ object WitherDragons : Module(
         else -> "§a"
     } + when (dragonTimerStyle) {
         0 -> "${spawnTime * 50}${if (showSymbol) "ms" else ""}"
-        1 -> "${(spawnTime / 20f).toFixed(1)}${if (showSymbol) "s" else ""}"
+        1 -> "${(spawnTime / 20f).toFixed(2)}${if (showSymbol) "s" else ""}"
         else -> "${spawnTime}${if (showSymbol) "t" else ""}"
     }
 
