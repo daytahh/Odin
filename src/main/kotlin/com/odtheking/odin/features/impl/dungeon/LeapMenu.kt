@@ -126,10 +126,7 @@ object LeapMenu : Module(
 
                     guiGraphics.pose().pushMatrix()
                     guiGraphics.pose().translate(nearX.toFloat(), nearY.toFloat())
-                    guiGraphics.pose().scale(
-                        scale * (BOX_WIDTH * 2f) / BOX_WIDTH,
-                        scale * (BOX_HEIGHT * 2f) / BOX_HEIGHT
-                    )
+                    guiGraphics.pose().scale(scale, scale)
 
                     guiGraphics.roundedFill(
                         localX, localY, localX + BOX_WIDTH, localY + BOX_HEIGHT,
