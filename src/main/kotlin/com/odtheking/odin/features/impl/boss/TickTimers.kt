@@ -23,7 +23,7 @@ object TickTimers : Module(
     private val symbolDisplay by BooleanSetting("Display Symbol", true, desc = "Displays s or t after the timers.")
     private val showPrefix by BooleanSetting("Show Prefix", true, desc = "Shows the prefix of the timers.")
 
-    private val necronRegex = Regex("^\\[BOSS] Necron: I'm afraid, your journey ends now\\.$")
+    private val necronRegex = Regex("^\\[BOSS] Necron: You went further than any human before, congratulations\\.$")
     private val goldorRegex = Regex("^\\[BOSS] Goldor: Who dares trespass into my domain\\?$")
     private val coreOpeningRegex = Regex("^The Core entrance is opening!$")
     private val stormStartRegex = Regex("^\\[BOSS] Storm: I should have known that I stood no chance\\.$")
@@ -92,7 +92,7 @@ object TickTimers : Module(
     init {
         on<ChatPacketEvent> {
             when {
-                necronHud.enabled && value.matches(necronRegex) -> necronTime = 60
+                necronHud.enabled && value.matches(necronRegex) -> necronTime = 122
                 goldorHud.enabled && value.matches(goldorRegex) -> goldorTickTime = 60
                 goldorHud.enabled && value.matches(coreOpeningRegex) -> {
                     goldorStartTime = -1
