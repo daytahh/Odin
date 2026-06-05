@@ -47,7 +47,7 @@ object Mimic : Module(
 
     private fun mimicKilled() {
         if (DungeonUtils.mimicKilled || DungeonUtils.inBoss) return
-        if (mimicMessageToggle) sendCommand("pc Mimic Killed!")
+        if (mimicMessageToggle) sendCommand("pc $mimicMessage")
         DungeonListener.dungeonStats.mimicKilled = true
     }
 
