@@ -31,7 +31,6 @@ object ClickGUI : Screen(Component.literal("Click GUI")) {
         for ((_, category) in Category.categories) add(Panel(category))
     }
 
-    private var openAnim = EaseOutAnimation(500)
     val gray38 = Color(38, 38, 38)
     val gray26 = Color(26, 26, 26)
 
@@ -48,16 +47,6 @@ object ClickGUI : Screen(Component.literal("Click GUI")) {
                 scaledMouseX,
                 scaledMouseY
             )
-
-            if (openAnim.isAnimating()) {
-                val scale = openAnim.get(0f, 1f)
-
-                val centerX = context.guiWidth().toFloat()
-                val centerY = context.guiHeight().toFloat()
-                NVGRenderer.translate(centerX, centerY)
-                NVGRenderer.scale(scale, scale)
-                NVGRenderer.translate(-centerX, -centerY)
-            }
 
             val draggedPanel = panels.firstOrNull { it.dragging }
             for (panel in panels) {
@@ -119,11 +108,6 @@ object ClickGUI : Screen(Component.literal("Click GUI")) {
             if (panels[i].keyPressed(keyEvent)) return true
         }
         return super.keyPressed(keyEvent)
-    }
-
-    override fun init() {
-        openAnim.start()
-        super.init()
     }
 
     override fun onClose() {

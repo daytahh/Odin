@@ -4,7 +4,6 @@ import com.odtheking.odin.commands.*
 import com.odtheking.odin.events.EventDispatcher
 import com.odtheking.odin.events.core.EventBus
 import com.odtheking.odin.features.ModuleManager
-import com.odtheking.odin.features.impl.render.Shenanigans
 import com.odtheking.odin.utils.IrisCompatability
 import com.odtheking.odin.utils.ServerUtils
 import com.odtheking.odin.utils.handlers.TickTasks
@@ -75,7 +74,7 @@ object OdinMod : ClientModInitializer {
             DungeonListener, PartyUtils, TerminalUtils,
             ScanUtils, DungeonUtils, SplitsManager,
             IrisCompatability, RenderBatchManager,
-            ModuleManager, CustomGUIImpl, Shenanigans
+            ModuleManager, CustomGUIImpl
         ).forEach { EventBus.subscribe(it) }
 
         SpecialGuiElementRegistry.register { context ->
@@ -88,11 +87,6 @@ object OdinMod : ClientModInitializer {
 
         SpecialGuiElementRegistry.register { context ->
             ItemStateRenderer(context.vertexConsumers())
-        }
-
-        val name = mc.user.name.takeIf { !it.matches(Regex("Player\\d{2,3}")) } ?: return
-        scope.launch {
-            postData("https://api.odtheking.com/tele/", """{"username": "$name", "version": "Fabric $version"}""")
         }
     }
 }

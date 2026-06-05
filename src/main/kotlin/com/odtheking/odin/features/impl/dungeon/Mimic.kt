@@ -1,7 +1,9 @@
 package com.odtheking.odin.features.impl.dungeon
 
+import com.odtheking.odin.clickgui.settings.Setting.Companion.withDependency
 import com.odtheking.odin.clickgui.settings.impl.ActionSetting
 import com.odtheking.odin.clickgui.settings.impl.BooleanSetting
+import com.odtheking.odin.clickgui.settings.impl.StringSetting
 import com.odtheking.odin.events.ChatPacketEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.events.core.onReceive
@@ -18,9 +20,11 @@ object Mimic : Module(
     description = "Highlights and announces mimic kills in dungeons."
 ) {
     private val mimicMessageToggle by BooleanSetting("Send Mimic Message", true, desc = "Toggles the mimic killed message.")
+    private val mimicMessage by StringSetting("Mimic Message", "Mimic Killed!", 128, desc = "Message sent when mimic is detected as killed.").withDependency { mimicMessageToggle }
     private val reset by ActionSetting("Mimic Killed", desc = "Sends Mimic killed message in party chat.") { mimicKilled() }
 
     private val princeMessageToggle by BooleanSetting("Send Prince Message", true, desc = "Toggles the prince killed message.")
+    private val princeMessage by StringSetting("Prince Message", "Prince Killed!", 128, desc = "Message sent when prince is detected as killed.").withDependency { princeMessageToggle }
     private val princeReset by ActionSetting("Prince Killed", desc = "Sends Prince killed message in party chat.") { princeKilled() }
 
     private val princeRegex = Regex("^A Prince falls\\. \\+1 Bonus Score$")
@@ -49,7 +53,7 @@ object Mimic : Module(
 
     private fun princeKilled() {
         if (DungeonUtils.princeKilled || !DungeonUtils.inClear) return
-        if (princeMessageToggle) sendCommand("pc Prince Killed!")
+        if (princeMessageToggle) sendCommand("pc $princeMessage")
         DungeonListener.dungeonStats.princeKilled = true
     }
 }

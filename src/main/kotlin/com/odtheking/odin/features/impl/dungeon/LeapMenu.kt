@@ -121,18 +121,12 @@ object LeapMenu : Module(
                     val hover = hoverHandler[i]
                     val hovered = (if (col == 0) mouseX < halfW else mouseX >= halfW) && (if (row == 0) mouseY < halfH else mouseY >= halfH)
                     if (hovered != hover.isHovered) {
-                        hover.anim.start()
                         hover.isHovered = hovered
                     }
 
-                    val grow = hover.anim.get(0f, 5f, !hover.isHovered)
-
                     guiGraphics.pose().pushMatrix()
                     guiGraphics.pose().translate(nearX.toFloat(), nearY.toFloat())
-                    guiGraphics.pose().scale(
-                        scale * (BOX_WIDTH + grow * 2f) / BOX_WIDTH,
-                        scale * (BOX_HEIGHT + grow * 2f) / BOX_HEIGHT
-                    )
+                    guiGraphics.pose().scale(scale, scale)
 
                     guiGraphics.roundedFill(
                         localX, localY, localX + BOX_WIDTH, localY + BOX_HEIGHT,
