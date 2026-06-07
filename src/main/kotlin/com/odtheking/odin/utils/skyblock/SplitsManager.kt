@@ -73,7 +73,7 @@ object SplitsManager {
                         capturedPB?.time(capturedSplits[index].name, times.last() / 1000f, "s§7!", "§6Total time §7took §6", Splits.enabled)
                         times.forEachIndexed { i, it ->
                             val name = if (i == capturedSplits.size - 1) "Total" else capturedSplits[i].name
-                            if (Splits.sendSplits && Splits.enabled) modMessage("§6$name §7took §6${formatTime((it))} §8(§7${(tickTimes[i] / 20f).toFixed()}§8)")
+                            if (Splits.sendSplits && Splits.enabled) modMessage("§6$name §7took §6${formatTime((it))} §8(§7${(ticktimes[i] / 20f).toFixed()}§8)")
                         }
                     }
                 } else currentSplits.personalBest?.time(currentSplits.splits[index - 1].name, currentSplitTime, "s§7!", "§6${currentSplits.splits[index - 1].name} §7took §6", Splits.enabled)
