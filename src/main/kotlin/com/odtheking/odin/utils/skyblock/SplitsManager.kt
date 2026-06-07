@@ -9,6 +9,7 @@ import com.odtheking.odin.utils.PersonalBest
 import com.odtheking.odin.utils.formatTime
 import com.odtheking.odin.utils.handlers.schedule
 import com.odtheking.odin.utils.modMessage
+import com.odtheking.odin.utils.toFixed
 import com.odtheking.odin.utils.skyblock.dungeon.DungeonListener
 
 data class Split(val regex: Regex, val name: String, var time: Long = 0L, var ticks: Long = 0L)
