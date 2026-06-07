@@ -135,11 +135,11 @@ object InvincibilityTimer : Module(
         ),
         SPIRIT(
             Regex("^Second Wind Activated! Your Spirit Mask saved your life!$"),
-            30, 600, "Spirit"
+            60, 600, "Spirit"
         ),
         PHOENIX(
             Regex("^Your Phoenix Pet saved you from certain death!$"),
-            80, 1200, "Phoenix"
+            60, 1200, "Phoenix"
         );
 
         var activeTime: Int = 0
